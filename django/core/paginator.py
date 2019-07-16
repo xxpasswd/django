@@ -1,3 +1,6 @@
+"""
+使用了迭代器模式，包括迭代对象和迭代方式
+"""
 import collections.abc
 import inspect
 import warnings

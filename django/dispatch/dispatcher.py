@@ -1,3 +1,10 @@
+"""
+dispatcher模块是以观察者模式实现的
+Signal是被观察者
+connect方法用于注册观察者
+send方法通知观察者，调用观察者的方法
+"""
+
 import threading
 import weakref
 
