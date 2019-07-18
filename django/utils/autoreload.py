@@ -1,3 +1,7 @@
+"""
+auto reload的设计思路，主进程和子进程，主进程一直监控子进程，子进程退出后，主进程启动一个新的子进程
+"""
+
 import functools
 import itertools
 import logging
