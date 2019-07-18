@@ -42,3 +42,44 @@
 每个web框架的实现或许各有不同，但是主要流程是大体相同的。所以从请求到响应的这个流程的顺序来阅读源码，我觉得是最合适的顺序
 
 
+#### WSGIHandler（django/core/handlers/wsgi.py) 请求入口
+
+django传递给wsgi服务器的application就是WSGIHandler
+
+一个请求的处理流程：
+
+请求前的中间件---->视图中间件---->视图函数---->请求后的中间件
+
+用函数的方式形象一下：
+
+```
+try:
+    response = pre_middleware(request)
+    if response:
+        return response
+    
+    response = view_middleware(request, view_fun)
+    
+    if not response:
+        try:
+            reponses = view_fun(request)
+        except:
+            responser = exception_middleware()
+    
+    if hasattr(response, 'render'):
+        response = template_middleware(response)
+        try:
+            response = response.render()
+        except:
+            response = exception_middleware()
+    
+    return response    
+        
+except:
+    exception()
+        
+    
+```
+
+
+
