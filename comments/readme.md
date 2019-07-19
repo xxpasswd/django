@@ -53,33 +53,46 @@ django传递给wsgi服务器的application就是WSGIHandler
 用函数的方式形象一下：
 
 ```
-try:
-    response = pre_middleware(request)
-    if response:
-        return response
-    
-    response = view_middleware(request, view_fun)
-    
-    if not response:
-        try:
-            reponses = view_fun(request)
-        except:
-            responser = exception_middleware()
-    
-    if hasattr(response, 'render'):
-        response = template_middleware(response)
-        try:
-            response = response.render()
-        except:
-            response = exception_middleware()
-    
+def process_request(request)
+    try:
+        # 请求前的中间件
+        response = pre_middleware(request)
+        if response:
+            return response
+        
+        # 视图中间件
+        response = view_middleware(request, view_fun)
+        
+        if not response:
+            try:
+                # 执行视图函数
+                reponses = view_fun(request)
+            except:
+                # 异常中间件
+                responser = exception_middleware()
+        
+        if hasattr(response, 'render'):
+            # 模板中间件
+            response = template_middleware(response)
+            try:
+                response = response.render()
+            except:
+                response = exception_middleware()
+        
+        # 请求后的中间件
+        response = post_middleware(request, response)
+            
+    except:
+        response = exception()
+        
     return response    
-        
-except:
-    exception()
-        
-    
 ```
+
+主体流程通了，接下来就是各种运行过程中用到的模块了
+
+#### 已阅读索引
+
+1. autoreload 机制  django\utils\autoreload.py
 
 
 
